@@ -22,7 +22,7 @@ class ItemView extends StatelessWidget {
           ),
           ElevatedButton(
             onPressed: () {
-              context.read<ItemViewModel>().updateItem(id, controller.text);
+              context.read<ItemViewModel>().updateItem(id, controller.text, "");
               Navigator.pop(ctx);
             },
             child: const Text('Simpan'),

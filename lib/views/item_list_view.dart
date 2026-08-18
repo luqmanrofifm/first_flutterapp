@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../viewmodels/item_viewmodel.dart';
 import 'item_create_view.dart';
-import 'item_detail_view.dart'; // Import halaman detail
+import 'item_detail_view.dart';
+import 'item_edit_view.dart'; // Import Halaman Edit
 
 class ItemListView extends StatelessWidget {
   const ItemListView({super.key});
@@ -28,9 +29,26 @@ class ItemListView extends StatelessWidget {
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
               ),
-              // Tombol panah menuju detail
-              trailing: const Icon(Icons.arrow_forward_ios, size: 16),
-              // Action ketika baris item di-klik
+              // Tombol Edit & Tombol Panah Detail
+              trailing: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  // Tombol Edit di Halaman List
+                  IconButton(
+                    icon: const Icon(Icons.edit, color: Colors.blue),
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => ItemEditView(item: item),
+                        ),
+                      );
+                    },
+                  ),
+                  const Icon(Icons.arrow_forward_ios, size: 16),
+                ],
+              ),
+              // Masuk ke Halaman Detail jika Card ditekan
               onTap: () {
                 Navigator.push(
                   context,

@@ -19,11 +19,14 @@ class ItemViewModel extends ChangeNotifier {
   }
 
   // UPDATE
-  void updateItem(String id, String newName) {
+  void updateItem(String id, String newName, String newDescription) {
+    if (newName.trim().isEmpty) return;
+
     final index = _items.indexWhere((item) => item.id == id);
-    if (index != -1 && newName.isNotEmpty) {
-      _items[index].name = newName;
-      notifyListeners(); // Refresh UI
+    if (index != -1) {
+      _items[index].name = newName.trim();
+      _items[index].description = newDescription.trim();
+      notifyListeners(); // Mengabari UI bahwa data telah berubah
     }
   }
 
