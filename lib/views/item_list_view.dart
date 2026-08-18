@@ -3,10 +3,39 @@ import 'package:provider/provider.dart';
 import '../viewmodels/item_viewmodel.dart';
 import 'item_create_view.dart';
 import 'item_detail_view.dart';
-import 'item_edit_view.dart'; // Import Halaman Edit
+import 'item_edit_view.dart';
 
 class ItemListView extends StatelessWidget {
   const ItemListView({super.key});
+
+  // Fungsi untuk menampilkan Pop-up Dialog Konfirmasi Hapus
+  void _showDeleteDialog(BuildContext context, String id, String itemName) {
+    showDialog(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        title: const Text('Hapus Item'),
+        content: Text('Apakah Anda yakin ingin menghapus "$itemName"?'),
+        actions: [
+          // Tombol Batal
+          TextButton(
+            onPressed: () => Navigator.pop(ctx),
+            child: const Text('Batal'),
+          ),
+          // Tombol Hapus (Action Delete)
+          ElevatedButton(
+            style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
+            onPressed: () {
+              // 1. Eksekusi hapus di ViewModel
+              context.read<ItemViewModel>().deleteItem(id);
+              // 2. Tutup pop-up dialog
+              Navigator.pop(ctx);
+            },
+            child: const Text('Hapus', style: TextStyle(color: Colors.white)),
+          ),
+        ],
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -29,11 +58,10 @@ class ItemListView extends StatelessWidget {
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
               ),
-              // Tombol Edit & Tombol Panah Detail
               trailing: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  // Tombol Edit di Halaman List
+                  // Tombol Edit
                   IconButton(
                     icon: const Icon(Icons.edit, color: Colors.blue),
                     onPressed: () {
@@ -45,10 +73,15 @@ class ItemListView extends StatelessWidget {
                       );
                     },
                   ),
-                  const Icon(Icons.arrow_forward_ios, size: 16),
+                  // Tombol Delete (Memicu Dialog Pop-up)
+                  IconButton(
+                    icon: const Icon(Icons.delete, color: Colors.red),
+                    onPressed: () {
+                      _showDeleteDialog(context, item.id, item.name);
+                    },
+                  ),
                 ],
               ),
-              // Masuk ke Halaman Detail jika Card ditekan
               onTap: () {
                 Navigator.push(
                   context,

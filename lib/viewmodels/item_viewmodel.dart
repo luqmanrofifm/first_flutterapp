@@ -33,6 +33,6 @@ class ItemViewModel extends ChangeNotifier {
   // DELETE
   void deleteItem(String id) {
     _items.removeWhere((item) => item.id == id);
-    notifyListeners(); // Refresh UI
+    notifyListeners(); // Refresh UI setelah data dihapus
   }
 }
